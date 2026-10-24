@@ -68,7 +68,11 @@ export default function ResumeUploadField({
     if (inputRef.current) inputRef.current.value = ''
   }
 
-  const displayError = error || localError
+  // localError wins when both are set - it's the more specific, more
+  // useful message (e.g. "Upload failed" explains WHY nothing is attached,
+  // whereas the parent's generic "please upload your resume" is just
+  // re-stating the empty state and would otherwise silently mask it).
+  const displayError = localError || error
 
   return (
     <div>
