@@ -157,13 +157,13 @@ export default function ApplicationForm({
   }
 
   const inputClass = (key: string) =>
-    `w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none transition focus:border-[var(--beacon-teal)] ${
+    `w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none transition focus:border-[var(--beacon-teal)] focus:ring-4 focus:ring-[var(--beacon-teal)]/10 ${
       fieldErrors[key] ? 'border-red-400' : 'border-[var(--border)]'
     }`
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm sm:p-8">
-      <h3 className="text-lg font-bold text-[var(--beacon-navy)]">Apply Now</h3>
+    <form onSubmit={handleSubmit} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_32px_64px_-32px_rgba(15,23,42,0.2)] sm:p-9">
+      <h3 className="text-xl font-bold text-[var(--beacon-navy)]">Apply Now</h3>
 
       {/* Honeypot - hidden from real users, never styled visible */}
       <input
@@ -287,7 +287,7 @@ export default function ApplicationForm({
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--beacon-teal)] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[var(--beacon-cyan)] disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--beacon-teal)] px-6 py-3.5 text-sm font-bold text-white shadow-[0_12px_30px_-10px_rgba(0,151,166,0.55)] transition hover:-translate-y-0.5 hover:bg-[var(--beacon-cyan)] disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-60 disabled:shadow-none"
       >
         {status === 'submitting' && <Loader2 size={16} className="animate-spin" />}
         {status === 'submitting' ? 'Submitting…' : 'Submit Application'}

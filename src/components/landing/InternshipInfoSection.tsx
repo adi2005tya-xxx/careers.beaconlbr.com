@@ -1,4 +1,5 @@
 import { PROGRAM_INFO } from '@/lib/config/program'
+import Reveal from './Reveal'
 
 const ROWS: [string, string][] = [
   ['Program Duration', PROGRAM_INFO.duration],
@@ -14,24 +15,31 @@ const ROWS: [string, string][] = [
 
 export default function InternshipInfoSection() {
   return (
-    <section className="bg-[var(--surface)] px-6 py-20">
+    <section className="bg-[var(--background)] px-6 py-24">
       <div className="mx-auto max-w-3xl">
-        <h2 className="text-center text-2xl font-extrabold text-[var(--beacon-navy)] sm:text-3xl">
-          Internship Information
-        </h2>
-        <div className="mt-10 overflow-hidden rounded-2xl border border-[var(--border)]">
-          {ROWS.map(([label, value], idx) => (
-            <div
-              key={label}
-              className={`flex flex-col gap-1 px-6 py-4 sm:flex-row sm:items-center sm:justify-between ${
-                idx % 2 === 0 ? 'bg-[var(--background)]' : 'bg-[var(--surface)]'
-              }`}
-            >
-              <span className="text-sm font-semibold text-[var(--beacon-navy)]">{label}</span>
-              <span className="text-sm text-[var(--text-muted)]">{value}</span>
-            </div>
-          ))}
-        </div>
+        <Reveal>
+          <span className="block text-center text-xs font-bold uppercase tracking-[0.2em] text-[var(--beacon-teal)]">
+            Good to Know
+          </span>
+          <h2 className="mt-3 text-center text-3xl font-extrabold tracking-tight text-[var(--beacon-navy)] sm:text-4xl">
+            Internship Information
+          </h2>
+        </Reveal>
+        <Reveal delay={100}>
+          <div className="mt-12 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_24px_48px_-28px_rgba(15,23,42,0.15)]">
+            {ROWS.map(([label, value], idx) => (
+              <div
+                key={label}
+                className={`flex flex-col gap-1 px-7 py-5 sm:flex-row sm:items-center sm:justify-between ${
+                  idx !== ROWS.length - 1 ? 'border-b border-[var(--border)]' : ''
+                }`}
+              >
+                <span className="text-sm font-semibold text-[var(--beacon-navy)]">{label}</span>
+                <span className="text-sm text-[var(--text-muted)]">{value}</span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </section>
   )

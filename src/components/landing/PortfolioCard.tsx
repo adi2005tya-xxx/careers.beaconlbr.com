@@ -12,8 +12,10 @@ export default function PortfolioCard({
 }) {
   return (
     <div
-      className={`flex flex-col rounded-2xl border bg-[var(--surface)] p-6 shadow-sm transition ${
-        isSelected ? 'border-[var(--beacon-teal)] ring-2 ring-[var(--beacon-teal)]/30' : 'border-[var(--border)]'
+      className={`flex flex-col rounded-2xl border bg-[var(--surface)] p-7 transition duration-300 hover:-translate-y-1 ${
+        isSelected
+          ? 'border-[var(--beacon-teal)] shadow-[0_24px_48px_-20px_rgba(0,151,166,0.35)] ring-2 ring-[var(--beacon-teal)]/25'
+          : 'border-[var(--border)] shadow-[0_1px_2px_rgba(15,23,42,0.04)] hover:border-[var(--beacon-teal)]/30 hover:shadow-[0_24px_48px_-20px_rgba(0,35,73,0.18)]'
       }`}
     >
       <h3 className="text-lg font-bold text-[var(--beacon-navy)]">{portfolio.title}</h3>
