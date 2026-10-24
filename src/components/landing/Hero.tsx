@@ -1,11 +1,13 @@
+import Image from 'next/image'
+
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[var(--beacon-navy)] to-[var(--beacon-blue)] px-6 py-20 text-white sm:py-28">
       <div className="mx-auto max-w-4xl text-center">
-        <div className="mb-6 flex items-center justify-center gap-2 text-sm font-semibold uppercase tracking-wider text-[var(--beacon-cyan)]">
-          <span>Beacon</span>
-          <span className="text-white/40">&middot;</span>
-          <span>Life Beyond Routine</span>
+        <div className="mb-8 flex justify-center">
+          <div className="rounded-2xl bg-white px-6 py-4 shadow-lg">
+            <Image src="/beacon-logo.png" alt="Beacon — Life Beyond Routine" width={300} height={300} className="h-24 w-24 object-contain sm:h-28 sm:w-28" priority />
+          </div>
         </div>
 
         <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
