@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Portfolio {
+  PRODUCT_TECHNOLOGY
+  SPONSORSHIP_EVENTS
+  MARKETING_GROWTH
+  RESEARCH_LEAD_GENERATION
+  SOCIAL_MEDIA_CONTENT
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  SHORTLISTED
+  INTERVIEW
+  SELECTED
+  REJECTED
+}
+
+enum EmailStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum YearOfStudy {
+  FIRST_YEAR
+  SECOND_YEAR
+  THIRD_YEAR
+  FOURTH_YEAR
+  FINAL_YEAR
+  POST_GRADUATE
+  OTHER
+}
+
+model Application {
+  id                 String            @id @default(uuid())
+
+  fullName           String
+  email              String
+  mobile             String
+  collegeName        String
+  yearOfStudy        YearOfStudy
+  degreeBranch       String
+
+  primaryPortfolio   Portfolio
+  secondaryPortfolio Portfolio?
+
+  availableStartDate DateTime
+  availableEndDate   DateTime
+
+  skills             String            @db.Text
+
+  // Never a public URL - the Blob store's pathname/key only. Resolved to a
+  // short-lived signed URL exclusively at admin-view time (lib/blob.ts).
+  resumeBlobPath     String
+  resumeOriginalName String
+  resumeSizeBytes    Int
+
+  status             ApplicationStatus @default(SUBMITTED)
+
+  emailStatus        EmailStatus       @default(PENDING)
+  emailError         String?           @db.Text
+  emailSentAt        DateTime?
+
+  // Hashed (not raw) submitter IP, used only for the rate-limit query in
+  // lib/rate-limit.ts - never displayed, never exported.
+  ipHash             String?
+
+  submittedAt        DateTime          @default(now())
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([primaryPortfolio])
+  @@index([submittedAt])
+  @@index([ipHash, submittedAt])
+}
