@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Sparkles } from 'lucide-react'
 import Reveal from './Reveal'
 
 const STATS: [string, string][] = [
@@ -18,14 +18,20 @@ export default function AboutBeacon() {
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--beacon-navy)] sm:text-4xl">
             Beacon &mdash; Life Beyond Routine
           </h2>
+          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[var(--beacon-teal)]/25 bg-[var(--beacon-teal)]/8 px-4 py-1.5">
+            <Sparkles size={14} className="text-[var(--beacon-teal)]" />
+            <span className="text-xs font-bold uppercase tracking-wide text-[var(--beacon-teal)]">
+              India&apos;s First Travel Marketplace
+            </span>
+          </div>
         </Reveal>
 
         <Reveal delay={100}>
           <div className="mx-auto mt-8 h-px w-16 bg-gradient-to-r from-[var(--beacon-teal)] to-[var(--beacon-cyan)]" />
           <p className="mt-8 text-base leading-relaxed text-[var(--text-muted)] sm:text-lg">
-            Beacon is building a leading marketplace for touring experiences &mdash; connecting
-            travellers directly with trusted travel planners, and helping travel businesses
-            showcase and manage their packages through digital tools.
+            Beacon is India&apos;s first dedicated marketplace for touring experiences &mdash;
+            connecting travellers directly with trusted travel planners, and helping travel
+            businesses showcase and manage their packages through digital tools.
           </p>
         </Reveal>
 
