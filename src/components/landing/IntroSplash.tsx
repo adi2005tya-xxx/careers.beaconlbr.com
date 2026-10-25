@@ -1,15 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 // A brief entry moment - not a loading screen (content behind it is
 // already rendering normally), just a short brand beat before it's
 // revealed. Plays on every load/refresh, by design.
 //
-// A dashed flight route draws itself in with a plane gliding along it,
-// waypoint dots popping in as it passes, then the wordmark settles in -
-// same travel motif as the hero's FlightPath, built as an actual drawn
-// animation rather than a static logo fade.
+// A literal beacon pulse: expanding rings of light radiate outward from
+// the mark, like a signal going out - distinct from the hero's flight-path
+// motif (that one's "traveling," this one's the name itself: a beacon
+// pulses light to guide people in).
 function initialPhase(): 'in' | 'done' {
   if (typeof window === 'undefined') return 'done'
   // Admin-facing routes share this root layout but aren't the "visitor
@@ -20,21 +21,18 @@ function initialPhase(): 'in' | 'done' {
 }
 
 export default function IntroSplash() {
-  const [phase, setPhase] = useState<'in' | 'text' | 'hold' | 'out' | 'done'>(initialPhase)
+  const [phase, setPhase] = useState<'in' | 'hold' | 'out' | 'done'>(initialPhase)
 
   useEffect(() => {
     if (phase !== 'in') return
-    const t1 = setTimeout(() => setPhase('text'), 950)
-    const t2 = setTimeout(() => setPhase('hold'), 1500)
-    const t3 = setTimeout(() => setPhase('out'), 2000)
-    const t4 = setTimeout(() => setPhase('done'), 2450)
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4) }
+    const t1 = setTimeout(() => setPhase('hold'), 1700)
+    const t2 = setTimeout(() => setPhase('out'), 2050)
+    const t3 = setTimeout(() => setPhase('done'), 2500)
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (phase === 'done') return null
-
-  const textVisible = phase === 'text' || phase === 'hold' || phase === 'out'
 
   return (
     <div
@@ -43,71 +41,48 @@ export default function IntroSplash() {
       }`}
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--beacon-teal)]/20 blur-[130px]" />
+        <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--beacon-teal)]/15 blur-[130px]" />
       </div>
 
-      <svg
-        className="pointer-events-none absolute inset-0 h-full w-full"
-        viewBox="0 0 1200 800"
-        preserveAspectRatio="xMidYMid slice"
-        aria-hidden="true"
-      >
-        <path
-          id="splash-route"
-          d="M 100 650 C 350 720, 520 420, 700 480 S 1000 280, 1100 160"
-          fill="none"
-          stroke="white"
-          strokeOpacity="0.35"
-          strokeWidth="2.5"
-          strokeDasharray="2 14"
-          strokeLinecap="round"
-          pathLength={1}
-          style={{
-            strokeDasharray: '1',
-            strokeDashoffset: phase === 'in' ? 1 : 0,
-            transition: 'stroke-dashoffset 900ms cubic-bezier(0.65, 0, 0.35, 1)',
-          }}
-        />
-        {[{ cx: 350, cy: 705, delay: 250 }, { cx: 700, cy: 480, delay: 500 }, { cx: 1000, cy: 280, delay: 750 }].map((wp, i) => (
-          <circle
-            key={i}
-            cx={wp.cx}
-            cy={wp.cy}
-            r="5"
-            fill="var(--beacon-cyan)"
+      <div className="relative flex items-center justify-center">
+        {/* Pulse rings - staggered, looping while the splash is up */}
+        {[0, 0.6, 1.2].map(delay => (
+          <span
+            key={delay}
+            className="absolute h-20 w-20 rounded-full border-2 border-[var(--beacon-cyan)] sm:h-24 sm:w-24"
             style={{
-              opacity: phase === 'in' ? 0 : 1,
-              transform: phase === 'in' ? 'scale(0)' : 'scale(1)',
-              transformOrigin: `${wp.cx}px ${wp.cy}px`,
-              transition: `opacity 300ms ease-out ${wp.delay}ms, transform 300ms ease-out ${wp.delay}ms`,
+              animation: 'beacon-pulse 1.8s ease-out infinite',
+              animationDelay: `${delay}s`,
             }}
           />
         ))}
-        <g
-          style={{
-            offsetPath: "path('M 100 650 C 350 720, 520 420, 700 480 S 1000 280, 1100 160')",
-            offsetDistance: phase === 'in' ? '0%' : '100%',
-            offsetRotate: 'auto',
-            transition: 'offset-distance 900ms cubic-bezier(0.65, 0, 0.35, 1)',
-          }}
+
+        <div
+          className={`relative flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-[0_0_50px_10px_rgba(0,166,184,0.4)] transition-all duration-500 ease-out sm:h-24 sm:w-24 ${
+            phase === 'in' ? 'scale-50 opacity-0' : 'scale-100 opacity-100'
+          }`}
         >
-          <path
-            d="M0 0 L-9 -3 L-9 -7 L-2 -2 L-13 -2 L-17 -6 L-20 -6 L-17 0 L-20 6 L-17 6 L-13 2 L-2 2 L-9 7 L-9 3 Z"
-            fill="white"
-          />
-        </g>
-      </svg>
+          <Image src="/icon.png" alt="Beacon" width={160} height={160} className="h-14 w-14 object-contain sm:h-16 sm:w-16" priority />
+        </div>
+      </div>
 
       <div
-        className={`relative transition-all duration-500 ease-out ${
-          textVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+        className={`absolute bottom-[30%] text-center transition-all delay-300 duration-500 ease-out ${
+          phase === 'in' ? 'translate-y-2 opacity-0' : 'translate-y-0 opacity-100'
         }`}
       >
-        <p className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">BEACON</p>
-        <p className="mt-2 text-center text-xs font-bold uppercase tracking-[0.3em] text-[var(--beacon-cyan)]">
+        <p className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">BEACON</p>
+        <p className="mt-1 text-xs font-bold uppercase tracking-[0.3em] text-[var(--beacon-cyan)]">
           Life Beyond Routine
         </p>
       </div>
+
+      <style>{`
+        @keyframes beacon-pulse {
+          0% { transform: scale(1); opacity: 0.6; }
+          100% { transform: scale(2.6); opacity: 0; }
+        }
+      `}</style>
     </div>
   )
 }
