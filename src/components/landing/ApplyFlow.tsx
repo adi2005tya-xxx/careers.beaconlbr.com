@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { PORTFOLIOS, type PortfolioKey } from '@/lib/config/portfolios'
 import PortfolioCard from './PortfolioCard'
+import SelectionProcess from './SelectionProcess'
 import ApplicationForm from '../application-form/ApplicationForm'
 import Reveal from './Reveal'
 
@@ -43,6 +44,8 @@ export default function ApplyFlow() {
           </div>
         </div>
       </section>
+
+      <SelectionProcess />
 
       <section id="apply" className="px-6 py-24">
         <div className="mx-auto max-w-2xl">
