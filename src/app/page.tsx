@@ -5,6 +5,7 @@ import IntroVideo from '@/components/landing/IntroVideo'
 import ApplyFlow from '@/components/landing/ApplyFlow'
 import InternshipInfoSection from '@/components/landing/InternshipInfoSection'
 import FinalCta from '@/components/landing/FinalCta'
+import Footer from '@/components/landing/Footer'
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
       <ApplyFlow />
       <InternshipInfoSection />
       <FinalCta />
+      <Footer />
     </main>
   )
 }
