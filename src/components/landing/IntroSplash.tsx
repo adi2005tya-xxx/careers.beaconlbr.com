@@ -1,17 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 
 // A brief entry moment - not a loading screen (content behind it is
 // already rendering normally), just a short brand beat before it's
-// revealed. Kept well under 2s total: a "premium" feel comes from
-// smoothness, not from making a visitor wait to see the page they came for.
-// Plays on every load/refresh, by design - the owner explicitly wants it
-// every time, not gated behind a "once per session" check.
-// Whether to actually run the splash, decided once up front (in the lazy
-// initializer below) rather than via setState inside an effect - only
-// admin routes skip straight to 'done' with no flash of the overlay first.
+// revealed. Plays on every load/refresh, by design.
+//
+// A dashed flight route draws itself in with a plane gliding along it,
+// waypoint dots popping in as it passes, then the wordmark settles in -
+// same travel motif as the hero's FlightPath, built as an actual drawn
+// animation rather than a static logo fade.
 function initialPhase(): 'in' | 'done' {
   if (typeof window === 'undefined') return 'done'
   // Admin-facing routes share this root layout but aren't the "visitor
@@ -22,40 +20,91 @@ function initialPhase(): 'in' | 'done' {
 }
 
 export default function IntroSplash() {
-  const [phase, setPhase] = useState<'in' | 'hold' | 'out' | 'done'>(initialPhase)
+  const [phase, setPhase] = useState<'in' | 'text' | 'hold' | 'out' | 'done'>(initialPhase)
 
   useEffect(() => {
     if (phase !== 'in') return
-    const t1 = setTimeout(() => setPhase('hold'), 500)
-    const t2 = setTimeout(() => setPhase('out'), 1100)
-    const t3 = setTimeout(() => setPhase('done'), 1550)
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
+    const t1 = setTimeout(() => setPhase('text'), 950)
+    const t2 = setTimeout(() => setPhase('hold'), 1500)
+    const t3 = setTimeout(() => setPhase('out'), 2000)
+    const t4 = setTimeout(() => setPhase('done'), 2450)
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (phase === 'done') return null
 
+  const textVisible = phase === 'text' || phase === 'hold' || phase === 'out'
+
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-[var(--beacon-navy)] transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[var(--beacon-navy)] transition-opacity duration-500 ${
         phase === 'out' ? 'pointer-events-none opacity-0' : 'opacity-100'
       }`}
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--beacon-teal)]/20 blur-[120px]" />
+        <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--beacon-teal)]/20 blur-[130px]" />
       </div>
 
+      <svg
+        className="pointer-events-none absolute inset-0 h-full w-full"
+        viewBox="0 0 1200 800"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        <path
+          id="splash-route"
+          d="M 100 650 C 350 720, 520 420, 700 480 S 1000 280, 1100 160"
+          fill="none"
+          stroke="white"
+          strokeOpacity="0.35"
+          strokeWidth="2.5"
+          strokeDasharray="2 14"
+          strokeLinecap="round"
+          pathLength={1}
+          style={{
+            strokeDasharray: '1',
+            strokeDashoffset: phase === 'in' ? 1 : 0,
+            transition: 'stroke-dashoffset 900ms cubic-bezier(0.65, 0, 0.35, 1)',
+          }}
+        />
+        {[{ cx: 350, cy: 705, delay: 250 }, { cx: 700, cy: 480, delay: 500 }, { cx: 1000, cy: 280, delay: 750 }].map((wp, i) => (
+          <circle
+            key={i}
+            cx={wp.cx}
+            cy={wp.cy}
+            r="5"
+            fill="var(--beacon-cyan)"
+            style={{
+              opacity: phase === 'in' ? 0 : 1,
+              transform: phase === 'in' ? 'scale(0)' : 'scale(1)',
+              transformOrigin: `${wp.cx}px ${wp.cy}px`,
+              transition: `opacity 300ms ease-out ${wp.delay}ms, transform 300ms ease-out ${wp.delay}ms`,
+            }}
+          />
+        ))}
+        <g
+          style={{
+            offsetPath: "path('M 100 650 C 350 720, 520 420, 700 480 S 1000 280, 1100 160')",
+            offsetDistance: phase === 'in' ? '0%' : '100%',
+            offsetRotate: 'auto',
+            transition: 'offset-distance 900ms cubic-bezier(0.65, 0, 0.35, 1)',
+          }}
+        >
+          <path
+            d="M0 0 L-9 -3 L-9 -7 L-2 -2 L-13 -2 L-17 -6 L-20 -6 L-17 0 L-20 6 L-17 6 L-13 2 L-2 2 L-9 7 L-9 3 Z"
+            fill="white"
+          />
+        </g>
+      </svg>
+
       <div
-        className={`relative flex flex-col items-center transition-all duration-700 ease-out ${
-          phase === 'in' ? 'scale-90 opacity-0' : 'scale-100 opacity-100'
+        className={`relative transition-all duration-500 ease-out ${
+          textVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
         }`}
       >
-        <Image src="/icon.png" alt="Beacon" width={200} height={200} className="h-20 w-20 object-contain sm:h-24 sm:w-24" priority />
-        <p
-          className={`mt-4 text-xs font-bold uppercase tracking-[0.3em] text-[var(--beacon-cyan)] transition-opacity duration-500 delay-200 ${
-            phase === 'in' ? 'opacity-0' : 'opacity-100'
-          }`}
-        >
+        <p className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">BEACON</p>
+        <p className="mt-2 text-center text-xs font-bold uppercase tracking-[0.3em] text-[var(--beacon-cyan)]">
           Life Beyond Routine
         </p>
       </div>
