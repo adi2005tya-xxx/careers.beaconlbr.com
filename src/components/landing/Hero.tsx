@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import FlightPath from './FlightPath'
 
 export default function Hero() {
   return (
@@ -7,6 +8,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-[-18%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[var(--beacon-teal)]/25 blur-[120px]" />
         <div className="absolute right-[-10%] bottom-[-20%] h-[420px] w-[420px] rounded-full bg-[var(--beacon-cyan)]/15 blur-[110px]" />
+        <FlightPath />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--beacon-navy)]" />
       </div>
 
