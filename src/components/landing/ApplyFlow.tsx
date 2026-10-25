@@ -32,7 +32,7 @@ export default function ApplyFlow() {
           </Reveal>
           <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {PORTFOLIOS.map((portfolio, i) => (
-              <Reveal key={portfolio.key} delay={(i % 3) * 80}>
+              <Reveal key={portfolio.key} delay={(i % 3) * 80} className="h-full">
                 <PortfolioCard
                   portfolio={portfolio}
                   isSelected={primaryPortfolio === portfolio.key}

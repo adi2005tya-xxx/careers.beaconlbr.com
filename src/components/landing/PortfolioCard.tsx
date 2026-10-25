@@ -12,7 +12,7 @@ export default function PortfolioCard({
 }) {
   return (
     <div
-      className={`flex flex-col rounded-2xl border bg-[var(--surface)] p-7 transition duration-300 hover:-translate-y-1 ${
+      className={`flex h-full flex-col rounded-2xl border bg-[var(--surface)] p-7 transition duration-300 hover:-translate-y-1 ${
         isSelected
           ? 'border-[var(--beacon-teal)] shadow-[0_24px_48px_-20px_rgba(0,151,166,0.35)] ring-2 ring-[var(--beacon-teal)]/25'
           : 'border-[var(--border)] shadow-[0_1px_2px_rgba(15,23,42,0.04)] hover:border-[var(--beacon-teal)]/30 hover:shadow-[0_24px_48px_-20px_rgba(0,35,73,0.18)]'
@@ -48,7 +48,7 @@ export default function PortfolioCard({
       <button
         type="button"
         onClick={onChoose}
-        className={`mt-6 flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+        className={`mt-auto flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
           isSelected
             ? 'bg-[var(--beacon-teal)] text-white'
             : 'border border-[var(--beacon-teal)] text-[var(--beacon-teal)] hover:bg-[var(--beacon-teal)]/10'

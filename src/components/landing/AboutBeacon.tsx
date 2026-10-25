@@ -1,4 +1,11 @@
+import { ArrowUpRight } from 'lucide-react'
 import Reveal from './Reveal'
+
+const STATS: [string, string][] = [
+  ['50+', 'Planners Onboarded'],
+  ['100+', 'Packages Live'],
+  ['All Types', 'Trekking to International'],
+]
 
 export default function AboutBeacon() {
   return (
@@ -12,22 +19,46 @@ export default function AboutBeacon() {
             Beacon &mdash; Life Beyond Routine
           </h2>
         </Reveal>
+
         <Reveal delay={100}>
           <div className="mx-auto mt-8 h-px w-16 bg-gradient-to-r from-[var(--beacon-teal)] to-[var(--beacon-cyan)]" />
           <p className="mt-8 text-base leading-relaxed text-[var(--text-muted)] sm:text-lg">
-            Beacon is a travel-tech platform designed to connect travellers with travel planners
-            while helping travel businesses showcase and manage their packages through digital
-            tools.
+            Beacon is building a leading marketplace for touring experiences &mdash; connecting
+            travellers directly with trusted travel planners, and helping travel businesses
+            showcase and manage their packages through digital tools.
           </p>
-          <p className="mt-4 text-base leading-relaxed text-[var(--text-muted)] sm:text-lg">
-            Our aim is to improve how people discover and experience travel while empowering travel
-            businesses with better digital experiences.
-          </p>
-          <p className="mt-4 text-base leading-relaxed text-[var(--text-muted)] sm:text-lg">
+        </Reveal>
+
+        <Reveal delay={150}>
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {STATS.map(([value, label]) => (
+              <div
+                key={label}
+                className="rounded-2xl border border-[var(--border)] bg-[var(--background)] px-5 py-6 transition hover:border-[var(--beacon-teal)]/30"
+              >
+                <p className="text-2xl font-extrabold text-[var(--beacon-navy)] sm:text-3xl">{value}</p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">{label}</p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal delay={200}>
+          <p className="mx-auto mt-10 max-w-2xl text-base leading-relaxed text-[var(--text-muted)] sm:text-lg">
             At Beacon, we believe in learning through practical work, solving real problems and
             building products that create value. Join us to experience the journey of an
             early-stage startup and contribute to its growth.
           </p>
+
+          <a
+            href="https://beaconlbr.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-7 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--beacon-teal)] transition hover:text-[var(--beacon-cyan)]"
+          >
+            Visit beaconlbr.com
+            <ArrowUpRight size={16} />
+          </a>
         </Reveal>
       </div>
     </section>

@@ -21,7 +21,7 @@ const BENEFITS = [
     icon: TrendingUp,
     title: 'Performance-Based Incentives',
     description:
-      'Incentives may be offered depending on your contribution, assigned responsibilities, performance and value delivered to Beacon. Incentives are not guaranteed for every intern — applicable criteria will be shared before you take on incentive-eligible work.',
+      'Potential incentives based on your contribution and value delivered to Beacon. Conditions will be shared beforehand.',
   },
 ]
 
