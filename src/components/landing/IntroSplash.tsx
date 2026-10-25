@@ -3,26 +3,21 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
-// A brief, one-time entry moment - not a loading screen (content behind it
-// is already rendering normally), just a short brand beat before it's
+// A brief entry moment - not a loading screen (content behind it is
+// already rendering normally), just a short brand beat before it's
 // revealed. Kept well under 2s total: a "premium" feel comes from
 // smoothness, not from making a visitor wait to see the page they came for.
-// Whether to actually run the splash, decided once up front (in the
-// lazy initializer below) rather than via setState inside an effect -
-// admin routes, reduced-motion visitors, and a visitor already mid-session
-// all skip straight to 'done' with no flash of the overlay first.
+// Plays on every load/refresh, by design - the owner explicitly wants it
+// every time, not gated behind a "once per session" check.
+// Whether to actually run the splash, decided once up front (in the lazy
+// initializer below) rather than via setState inside an effect - only
+// admin routes skip straight to 'done' with no flash of the overlay first.
 function initialPhase(): 'in' | 'done' {
   if (typeof window === 'undefined') return 'done'
   // Admin-facing routes share this root layout but aren't the "visitor
   // arriving" moment this is for - an admin reviewing applications
   // doesn't need a brand splash on every login.
   if (window.location.pathname.startsWith('/admin')) return 'done'
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'done'
-  // Only once per browser session - a visitor moving between tabs or
-  // reloading mid-visit doesn't need to see this again, only a genuinely
-  // fresh arrival does.
-  if (sessionStorage.getItem('beacon-intro-seen')) return 'done'
-  sessionStorage.setItem('beacon-intro-seen', '1')
   return 'in'
 }
 
