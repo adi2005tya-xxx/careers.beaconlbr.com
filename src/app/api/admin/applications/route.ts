@@ -19,6 +19,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         id: true,
         fullName: true,
         email: true,
+        mobile: true,
         collegeName: true,
         primaryPortfolio: true,
         status: true,

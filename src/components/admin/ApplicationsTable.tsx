@@ -1,12 +1,12 @@
 import Link from 'next/link'
-import { AlertTriangle } from 'lucide-react'
-import StatusBadge from './StatusBadge'
+import { AlertTriangle, Phone } from 'lucide-react'
 import { getPortfolio } from '@/lib/config/portfolios'
 
 interface Row {
   id: string
   fullName: string
   email: string
+  mobile: string
   collegeName: string
   primaryPortfolio: string
   status: string
@@ -31,7 +31,7 @@ export default function ApplicationsTable({ items }: { items: Row[] }) {
             <th className="px-4 py-3">Applicant</th>
             <th className="px-4 py-3">College</th>
             <th className="px-4 py-3">Portfolio</th>
-            <th className="px-4 py-3">Status</th>
+            <th className="px-4 py-3">Contact</th>
             <th className="px-4 py-3">Submitted</th>
             <th className="px-4 py-3" />
           </tr>
@@ -50,7 +50,12 @@ export default function ApplicationsTable({ items }: { items: Row[] }) {
               </td>
               <td className="px-4 py-3 text-[var(--text-muted)]">{app.collegeName}</td>
               <td className="px-4 py-3 text-[var(--text-muted)]">{getPortfolio(app.primaryPortfolio as never)?.title || app.primaryPortfolio}</td>
-              <td className="px-4 py-3"><StatusBadge status={app.status} /></td>
+              <td className="px-4 py-3">
+                <a href={`tel:${app.mobile}`} className="flex items-center gap-1.5 text-[var(--text)] hover:text-[var(--beacon-teal)]">
+                  <Phone size={13} className="text-[var(--text-muted)]" />
+                  {app.mobile}
+                </a>
+              </td>
               <td className="px-4 py-3 text-[var(--text-muted)]">
                 {new Date(app.submittedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
               </td>

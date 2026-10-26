@@ -27,7 +27,7 @@ export default async function AdminApplicationsPage({
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       select: {
-        id: true, fullName: true, email: true, collegeName: true,
+        id: true, fullName: true, email: true, mobile: true, collegeName: true,
         primaryPortfolio: true, status: true, emailStatus: true, submittedAt: true,
       },
     }),
