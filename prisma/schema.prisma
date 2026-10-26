@@ -58,11 +58,12 @@ model Application {
 
   skills             String            @db.Text
 
-  // Never a public URL - the Blob store's pathname/key only. Resolved to a
-  // short-lived signed URL exclusively at admin-view time (lib/blob.ts).
-  resumeBlobPath     String
-  resumeOriginalName String
-  resumeSizeBytes    Int
+  // Optional - an applicant can submit without one. Never a public URL when
+  // present - the Blob store's pathname/key only. Resolved to a short-lived
+  // signed URL exclusively at admin-view time (lib/blob.ts).
+  resumeBlobPath     String?
+  resumeOriginalName String?
+  resumeSizeBytes    Int?
 
   status             ApplicationStatus @default(SUBMITTED)
 

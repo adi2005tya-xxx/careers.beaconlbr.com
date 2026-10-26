@@ -27,9 +27,10 @@ export const applicationSchema = z.object({
 
   skills: z.string().trim().min(1, 'Please describe your relevant skills').max(MAX_SKILLS_LENGTH),
 
-  resumeBlobPath: z.string().trim().min(1, 'Resume upload is required'),
-  resumeOriginalName: z.string().trim().min(1).max(260),
-  resumeSizeBytes: z.number().int().positive().max(MAX_RESUME_SIZE_BYTES),
+  // Optional - an applicant can submit without a resume.
+  resumeBlobPath: z.string().trim().min(1).optional(),
+  resumeOriginalName: z.string().trim().min(1).max(260).optional(),
+  resumeSizeBytes: z.number().int().positive().max(MAX_RESUME_SIZE_BYTES).optional(),
 
   privacyAcknowledged: z.literal(true, { error: 'You must acknowledge the privacy notice to apply' }),
 
@@ -47,6 +48,17 @@ export const applicationSchema = z.object({
   .refine(data => !data.secondaryPortfolio || data.secondaryPortfolio !== data.primaryPortfolio, {
     message: 'Secondary portfolio must be different from the primary choice',
     path: ['secondaryPortfolio'],
+  })
+  .refine(data => {
+    // All-or-nothing: a resume reference without its name/size (or vice
+    // versa) would be malformed data, even though having none at all is
+    // fine - resume is optional, a half-populated one isn't.
+    const fields = [data.resumeBlobPath, data.resumeOriginalName, data.resumeSizeBytes]
+    const presentCount = fields.filter(f => f !== undefined).length
+    return presentCount === 0 || presentCount === fields.length
+  }, {
+    message: 'Resume upload is incomplete - try removing and re-uploading it',
+    path: ['resumeBlobPath'],
   })
 
 export type ApplicationInput = z.infer<typeof applicationSchema>

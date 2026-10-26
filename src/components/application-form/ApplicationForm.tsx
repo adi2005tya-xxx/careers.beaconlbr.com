@@ -72,11 +72,6 @@ export default function ApplicationForm({
     e.preventDefault()
     if (submittingRef.current) return
 
-    if (!resume) {
-      setFieldErrors(prev => ({ ...prev, resumeBlobPath: 'Please upload your resume' }))
-      return
-    }
-
     const candidate = {
       fullName: form.fullName,
       email: form.email,
@@ -89,9 +84,9 @@ export default function ApplicationForm({
       availableStartDate: form.availableStartDate,
       availableEndDate: form.availableEndDate,
       skills: form.skills,
-      resumeBlobPath: resume.resumeBlobPath,
-      resumeOriginalName: resume.resumeOriginalName,
-      resumeSizeBytes: resume.resumeSizeBytes,
+      resumeBlobPath: resume?.resumeBlobPath,
+      resumeOriginalName: resume?.resumeOriginalName,
+      resumeSizeBytes: resume?.resumeSizeBytes,
       privacyAcknowledged: form.privacyAcknowledged,
       honeypot: form.honeypot,
     }

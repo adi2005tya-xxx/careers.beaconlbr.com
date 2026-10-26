@@ -77,10 +77,10 @@ export default function ResumeUploadField({
   return (
     <div>
       <label className="mb-1.5 block text-sm font-semibold text-[var(--beacon-navy)]">
-        Upload Your Resume
+        Upload Your Resume <span className="font-normal text-[var(--text-muted)]">(optional)</span>
       </label>
       <p className="mb-2 text-xs text-[var(--text-muted)]">
-        Upload your latest resume in PDF format (max 5 MB).
+        Upload your latest resume in PDF format (max 5 MB) if you have one ready.
       </p>
 
       {!value && status !== 'uploading' && (

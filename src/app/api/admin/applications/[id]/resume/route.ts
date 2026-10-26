@@ -15,6 +15,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   if (!application) {
     return NextResponse.json({ error: 'NOT_FOUND' }, { status: 404 })
   }
+  if (!application.resumeBlobPath) {
+    return NextResponse.json({ error: 'NO_RESUME' }, { status: 404 })
+  }
 
   try {
     const signedUrl = await getSignedResumeUrl(application.resumeBlobPath)

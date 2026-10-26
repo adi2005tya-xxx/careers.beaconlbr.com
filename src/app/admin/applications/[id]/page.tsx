@@ -65,15 +65,19 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
         </div>
 
         <div className="mt-6">
-          <a
-            href={`/api/admin/applications/${application.id}/resume`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl border border-[var(--beacon-teal)] px-4 py-2.5 text-sm font-bold text-[var(--beacon-teal)] transition hover:bg-[var(--beacon-teal)]/10"
-          >
-            <FileText size={16} />
-            View Resume ({application.resumeOriginalName})
-          </a>
+          {application.resumeBlobPath ? (
+            <a
+              href={`/api/admin/applications/${application.id}/resume`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl border border-[var(--beacon-teal)] px-4 py-2.5 text-sm font-bold text-[var(--beacon-teal)] transition hover:bg-[var(--beacon-teal)]/10"
+            >
+              <FileText size={16} />
+              View Resume ({application.resumeOriginalName})
+            </a>
+          ) : (
+            <p className="text-sm italic text-[var(--text-muted)]">No resume was submitted with this application.</p>
+          )}
         </div>
       </div>
     </div>
