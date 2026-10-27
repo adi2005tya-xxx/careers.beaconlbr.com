@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
-import { Download, Search } from 'lucide-react'
+import { Download, FileArchive, Search } from 'lucide-react'
 import { PORTFOLIOS } from '@/lib/config/portfolios'
 
 const STATUS_OPTIONS = [
@@ -28,6 +28,7 @@ export default function FiltersBar() {
   }
 
   const exportHref = `/api/admin/applications/export?${searchParams.toString()}`
+  const resumesZipHref = `/api/admin/applications/export/resumes?${searchParams.toString()}`
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -62,13 +63,22 @@ export default function FiltersBar() {
           ))}
         </select>
       </div>
-      <a
-        href={exportHref}
-        className="flex shrink-0 items-center justify-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--beacon-navy)] transition hover:bg-[var(--background)]"
-      >
-        <Download size={15} />
-        Export CSV
-      </a>
+      <div className="flex shrink-0 gap-2">
+        <a
+          href={exportHref}
+          className="flex items-center justify-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--beacon-navy)] transition hover:bg-[var(--background)]"
+        >
+          <Download size={15} />
+          Export CSV
+        </a>
+        <a
+          href={resumesZipHref}
+          className="flex items-center justify-center gap-1.5 rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--beacon-navy)] transition hover:bg-[var(--background)]"
+        >
+          <FileArchive size={15} />
+          Download Resumes (ZIP)
+        </a>
+      </div>
     </div>
   )
 }

@@ -15,12 +15,13 @@ function csvField(value: unknown): string {
 const COLUMNS = [
   'id', 'submittedAt', 'fullName', 'email', 'mobile', 'collegeName', 'yearOfStudy',
   'degreeBranch', 'primaryPortfolio', 'secondaryPortfolio', 'availableStartDate',
-  'availableEndDate', 'skills', 'status', 'emailStatus',
+  'availableEndDate', 'skills', 'status', 'emailStatus', 'resumeLink',
 ] as const
 
 export async function GET(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url)
   const where = buildApplicationWhere(searchParams)
+  const origin = new URL(request.url).origin
 
   const applications = await prisma.application.findMany({
     where,
@@ -29,18 +30,23 @@ export async function GET(request: Request): Promise<NextResponse> {
       id: true, submittedAt: true, fullName: true, email: true, mobile: true,
       collegeName: true, yearOfStudy: true, degreeBranch: true, primaryPortfolio: true,
       secondaryPortfolio: true, availableStartDate: true, availableEndDate: true,
-      skills: true, status: true, emailStatus: true,
-      // Deliberately not selected: resumeBlobPath - never belongs in an
-      // export, same reasoning as never putting a public resume link in a
-      // spreadsheet.
+      skills: true, status: true, emailStatus: true, resumeBlobPath: true,
+      // The raw blob path itself is never put in the export - only a link
+      // to our own admin-gated route, which mints a short-lived signed URL
+      // at the moment it's opened. Opening it without an authenticated
+      // admin session just redirects to login, so the CSV stays safe to
+      // store/share internally even though it now carries a resume link.
     },
   })
 
   const rows = [
     COLUMNS.join(','),
-    ...applications.map(app =>
-      COLUMNS.map(col => csvField(app[col as keyof typeof app])).join(',')
-    ),
+    ...applications.map(app => {
+      const resumeLink = app.resumeBlobPath ? `${origin}/api/admin/applications/${app.id}/resume` : ''
+      return COLUMNS.map(col =>
+        col === 'resumeLink' ? csvField(resumeLink) : csvField(app[col as keyof typeof app])
+      ).join(',')
+    }),
   ]
 
   return new NextResponse(rows.join('\r\n'), {
