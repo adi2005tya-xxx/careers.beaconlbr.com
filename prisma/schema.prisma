@@ -71,6 +71,15 @@ model Application {
   emailError         String?           @db.Text
   emailSentAt        DateTime?
 
+  // Phase 2 shortlist email (see /api/admin/applications/send-phase2) -
+  // set once sent, so the admin can safely re-trigger the batch endpoint
+  // (e.g. after a partial failure) without re-emailing anyone who already
+  // got theirs. phase2TaskIds records which 2 of the 3 technical tasks
+  // this candidate was offered, e.g. "1,2" - kept for reference/support
+  // questions, not re-derived from the rotation after the fact.
+  phase2EmailSentAt  DateTime?
+  phase2TaskIds      String?
+
   // Hashed (not raw) submitter IP, used only for the rate-limit query in
   // lib/rate-limit.ts - never displayed, never exported.
   ipHash             String?
