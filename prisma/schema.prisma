@@ -79,6 +79,9 @@ model Application {
   // questions, not re-derived from the rotation after the fact.
   phase2EmailSentAt  DateTime?
   phase2TaskIds      String?
+  // Follow-up nudge for anyone who got the Phase 2 email above - same
+  // re-trigger-safety reasoning: set once sent, so skipped on a retry.
+  phase2ReminderSentAt DateTime?
 
   // Hashed (not raw) submitter IP, used only for the rate-limit query in
   // lib/rate-limit.ts - never displayed, never exported.

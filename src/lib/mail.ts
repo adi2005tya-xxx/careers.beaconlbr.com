@@ -241,6 +241,59 @@ export async function sendPhase2ShortlistEmail({
   })
 }
 
+export async function sendPhase2ReminderEmail({
+  applicantName,
+  applicantEmail,
+}: {
+  applicantName: string
+  applicantEmail: string
+}): Promise<void> {
+  const safeName = escapeHtml(applicantName)
+
+  await transporter.sendMail({
+    from: `"Beacon Team" <${process.env.GMAIL_USER}>`,
+    to: applicantEmail,
+    subject: 'Reminder: Phase 2 Submission Deadline — Beacon Winter Internship',
+    text:
+      `Dear ${applicantName},\n\n` +
+      `This is a quick reminder regarding your Phase 2 shortlist task for the Beacon Winter Internship Program (Product & Technology track), sent to you yesterday.\n\n` +
+      `Your submission window will be closing by tonight.\n\n` +
+      `Please send everything as soon as possible to:\n` +
+      `- Email: beaconlbr@gmail.com\n` +
+      `- WhatsApp: 9766820696\n\n` +
+      `Required submission:\n` +
+      `1. Technical task - source code or prototype link, with a short explanation of your approach.\n` +
+      `2. Product audit report.\n` +
+      `3. A short demo/screen recording, if possible.\n` +
+      `4. README or documentation.\n\n` +
+      `If you need any help or are stuck on something, message us on WhatsApp at 9766820696.\n\n` +
+      `All the best!\n\n` +
+      `Team Beacon\nLife Beyond Routine`,
+    html: `
+      <div style="font-family: sans-serif; font-size: 14px; color: #1a1a1a; line-height: 1.6;">
+        <p>Dear ${safeName},</p>
+        <p>This is a quick reminder regarding your <strong>Phase 2 shortlist task</strong> for the Beacon Winter Internship Program (Product &amp; Technology track), sent to you yesterday.</p>
+        <p><strong>Your submission window will be closing by tonight.</strong></p>
+        <p>Please send everything as soon as possible to:</p>
+        <ul>
+          <li>Email: <a href="mailto:beaconlbr@gmail.com">beaconlbr@gmail.com</a></li>
+          <li>WhatsApp: <strong>9766820696</strong></li>
+        </ul>
+        <p>Required submission:</p>
+        <ol>
+          <li>Technical task — source code or prototype link, with a short explanation of your approach.</li>
+          <li>Product audit report.</li>
+          <li>A short demo/screen recording, if possible.</li>
+          <li>README or documentation.</li>
+        </ol>
+        <p>If you need any help or are stuck on something, message us on WhatsApp at <strong>9766820696</strong>.</p>
+        <p>All the best!</p>
+        <p><strong>Team Beacon</strong><br />Life Beyond Routine</p>
+      </div>
+    `,
+  })
+}
+
 export async function sendApplicationConfirmation({
   applicantName,
   applicantEmail,
